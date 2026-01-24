@@ -1,45 +1,19 @@
-package model;
+package Model;
 
-public class Book extends LibraryItem implements Validatable, Borrowable {
+import exception.InvalidInputException;
 
-    private Author author;
-    private boolean borrowed = false;
+public class Book extends model.LibraryItem implements Validatable, model.Borrowable {
 
-    // ===== Constructor =====
-    public Book(int id, String title, Author author) {
-        super(id, title); // calls LibraryItem constructor
+    private Model.Author author;
+    private int pages;
+    private boolean available = true;
+
+    public Book(int id, String title, Model.Author author, int pages) {
+        super(id, title);
         this.author = author;
-        validate();       // validate author and title
+        this.pages = pages;
     }
 
-    // ===== Validation =====
-    @Override
-    public void validate() {
-        if (title == null || title.trim().isEmpty()) {  // replaced isBlank() with trim().isEmpty()
-            throw new IllegalArgumentException("Book title cannot be without ");
-        }
-        if (author == null) {
-            throw new IllegalArgumentException("Author cannot be null");
-        }
-    }
-
-    // ===== Borrowable methods =====
-    @Override
-    public void borrow() {
-        borrowed = true;
-    }
-
-    @Override
-    public void returnItem() {
-        borrowed = false;
-    }
-
-    @Override
-    public boolean isBorrowed() {
-        return borrowed;
-    }
-
-    // ===== Polymorphism =====
     @Override
     public String getItemType() {
         return "Book";
@@ -47,15 +21,36 @@ public class Book extends LibraryItem implements Validatable, Borrowable {
 
     @Override
     public void displayInfo() {
-        System.out.println(
-                "Book: " + title +
-                        " | Author: " + author.getName() +
-                        " | Available: " + (!borrowed)
-        );
+        // نام نویسنده را از شیء Author می‌گیرد
+        System.out.println("Book: " + getTitle() + " | " + (author != null ? author.getName() : "Unknown"));
     }
 
-    // ===== Getter =====
+    @Override
+    public void validate() {
+        // فیلد title در کلاس LibraryItem تعریف شده، مطمئن شوید دسترسی دارد
+        if (getTitle() == null || getTitle().isEmpty())
+            throw new InvalidInputException("Title cannot be empty");
+        if (pages <= 0)
+            throw new InvalidInputException("Pages must be > 0");
+        if (author == null)
+            throw new InvalidInputException("Author required");
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    // گترها برای استفاده در BookRepository جهت ذخیره در دیتابیس
     public Author getAuthor() {
         return author;
+    }
+
+    public int getPages() {
+        return pages;
     }
 }
