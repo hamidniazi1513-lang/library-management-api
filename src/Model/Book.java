@@ -16,7 +16,7 @@ public class Book extends LibraryItem implements Validatable, Borrowable {
     @Override
     public void validate() {
         if (title == null || title.trim().isEmpty()) {  // replaced isBlank() with trim().isEmpty()
-            throw new IllegalArgumentException("Book title cannot be empty");
+            throw new IllegalArgumentException("Book title cannot be without ");
         }
         if (author == null) {
             throw new IllegalArgumentException("Author cannot be null");
