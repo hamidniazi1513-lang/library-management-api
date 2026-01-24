@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 public class Author {
 
@@ -6,9 +6,6 @@ public class Author {
     private String name;
 
     public Author(int id, String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Author name cannot be empty");
-        }
         this.id = id;
         this.name = name;
     }

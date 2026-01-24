@@ -1,69 +1,67 @@
 package repository;
 
-import model.Author;
-import model.Book;
 import utils.DatabaseConnection;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class BookRepository {
 
-    // ===== CREATE =====
-    public void create(Book book) {
+    // CREATE (Insert Book)
+    public void create(String title, int pages, int authorId) {
+
         String sql =
-                "INSERT INTO books(name, author, available) VALUES (?, ?, ?)";
+                "INSERT INTO books(title, pages, author_id) VALUES (?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, book.getTitle());              // -> name
-            ps.setString(2, book.getAuthor().getName());  // -> author
-            ps.setBoolean(3, !book.isBorrowed());         // -> available
+            ps.setString(1, title);
+            ps.setInt(2, pages);
+            ps.setInt(3, authorId);
 
             ps.executeUpdate();
+            System.out.println("Book added successfully.");
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Insert failed", e);
+        } catch (Exception e) {
+            System.out.println("Book already exists.");
         }
     }
 
-    // ===== READ =====
-    public List<Book> getAll() {
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books";
+    // READ (Select All Books)
+    public void findAll() {
+
+        String sql = """
+                    SELECT b.id, b.title, a.name
+                    FROM books b
+                    JOIN authors a ON b.author_id = a.id
+                    ORDER BY b.id
+                """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
+            System.out.println("ID | Title | Author");
+            System.out.println("---------------------------");
+
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String authorName = rs.getString("author");
-                boolean available = rs.getBoolean("available");
-
-                Author author = new Author(0, authorName);
-                Book book = new Book(id, name, author);
-
-                // available=false → borrowed=true
-                if (!available) {
-                    book.borrow();
-                }
-
-                books.add(book);
+                System.out.println(
+                        rs.getInt("id") + " | " +
+                                rs.getString("title") + " | " +
+                                rs.getString("name")
+                );
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Fetch failed", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return books;
     }
 
-    // ===== DELETE =====
+    // DELETE (By ID)
     public void delete(int id) {
+
         String sql = "DELETE FROM books WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -71,9 +69,10 @@ public class BookRepository {
 
             ps.setInt(1, id);
             ps.executeUpdate();
+            System.out.println("Book deleted successfully.");
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Delete failed", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

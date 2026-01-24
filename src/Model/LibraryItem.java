@@ -13,10 +13,6 @@ public abstract class LibraryItem {
     public abstract String getItemType();
     public abstract void displayInfo();
 
-    public int getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
