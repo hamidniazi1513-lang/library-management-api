@@ -9,7 +9,8 @@ public class Main {
         BookService service = new BookService();
 
         Author author = new Author(1, "Fyodor Dostoevsky");
-        Book book = new Book(0, "Crime and Punishment", author);
+        Book book;
+        book = new Book(0, "Crime and Punishment", author);
 
         service.addBook(book);
 
