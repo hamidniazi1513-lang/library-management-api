@@ -1,21 +1,21 @@
 package model;
 
-public class Book extends LibraryItem
-        implements Validatable, Borrowable {
+public class Book extends LibraryItem implements Validatable, Borrowable {
 
     private Author author;
     private boolean borrowed = false;
 
+    // ===== Constructor =====
     public Book(int id, String title, Author author) {
-        super(id, title);
+        super(id, title); // calls LibraryItem constructor
         this.author = author;
-        validate();
+        validate();       // validate author and title
     }
 
-
+    // ===== Validation =====
     @Override
     public void validate() {
-        if (title == null || title.isBlank()) {
+        if (title == null || title.trim().isEmpty()) {  // replaced isBlank() with trim().isEmpty()
             throw new IllegalArgumentException("Book title cannot be empty");
         }
         if (author == null) {
@@ -23,7 +23,7 @@ public class Book extends LibraryItem
         }
     }
 
-
+    // ===== Borrowable methods =====
     @Override
     public void borrow() {
         borrowed = true;
@@ -34,6 +34,7 @@ public class Book extends LibraryItem
         borrowed = false;
     }
 
+    @Override
     public boolean isBorrowed() {
         return borrowed;
     }
@@ -53,7 +54,7 @@ public class Book extends LibraryItem
         );
     }
 
-    // ===== Getters =====
+    // ===== Getter =====
     public Author getAuthor() {
         return author;
     }
