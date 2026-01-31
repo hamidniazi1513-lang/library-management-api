@@ -2,7 +2,7 @@
 
 ## Project Overview
 This project is a **Library Management System** developed in Java 
-      for **Assignment 3 (Advanced OOP API with JDBC)**.  
+      for **Assignment 4 (Advanced OOP API with JDBC)**.  
 The goal of the project is to practice **object-oriented programming concepts** 
 together with **real database interaction** using PostgreSQL.
 
