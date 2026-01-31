@@ -1,78 +1,22 @@
 package repository;
 
+import model.Book;
 import utils.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class BookRepository {
-
-    // CREATE (Insert Book)
-    public void create(String title, int pages, int authorId) {
-
-        String sql =
-                "INSERT INTO books(title, pages, author_id) VALUES (?, ?, ?)";
-
+    public void save(Book book) throws SQLException {
+        String sql = "INSERT INTO books (title, author_name, is_borrowed) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, title);
-            ps.setInt(2, pages);
-            ps.setInt(3, authorId);
-
-            ps.executeUpdate();
-            System.out.println("Book added successfully.");
-
-        } catch (Exception e) {
-            System.out.println("Book already exists.");
-        }
-    }
-
-    // READ (Select All Books)
-    public void findAll() {
-
-        String sql = """
-                    SELECT b.id, b.title, a.name
-                    FROM books b
-                    JOIN authors a ON b.author_id = a.id
-                    ORDER BY b.id
-                """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            System.out.println("ID | Title | Author");
-            System.out.println("---------------------------");
-
-            while (rs.next()) {
-                System.out.println(
-                        rs.getInt("id") + " | " +
-                                rs.getString("title") + " | " +
-                                rs.getString("name")
-                );
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // DELETE (By ID)
-    public void delete(int id) {
-
-        String sql = "DELETE FROM books WHERE id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            System.out.println("Book deleted successfully.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, book.getName());
+            // We use author name for now, or an ID if your DB uses foreign keys
+            pstmt.setString(2, "Unknown");
+            pstmt.setBoolean(3, false);
+            pstmt.executeUpdate();
         }
     }
 }
