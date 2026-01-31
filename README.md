@@ -23,27 +23,37 @@ IntelliJ IDEA
 Project Structure
 assignment4-solid-library-api/
 ├── src/
-│   ├── controller/          # Handles user input and delegates to services
-│   ├── service/             # Contains business logic, validation, and SOLID application
+│   ├── controller/          
+│   ├── service/            
 │   │   └── interfaces/
-│   ├── repository/          # Handles database CRUD operations
+│   ├── repository/          
 │   │   └── interfaces/
-│   ├── model/               # Abstract classes and entity subclasses
-│   ├── dto/                 # Data transfer objects (optional)
-│   ├── exception/           # Custom exceptions
-│   ├── utils/               # Reflection, sorting, database utilities
+│   ├── model/               
+│   ├── dto/                 
+│   ├── exception/           
+│   ├── utils/               
 │   │   ├── DatabaseConnection.java
 │   │   ├── SortingUtils.java
 │   │   └── ReflectionUtils.java
-│   └── Main.java            # Driver class demonstrating all features
+│   └── Main.java           
 ├── resources/
-│   └── schema.sql           # Database schema & sample inserts
+│   └── schema.sql           
 ├── docs/
 │   ├── screenshots/
 │   └── uml.png
 ├── README.md
 └── .gitignore
 
+# Handles user input and delegates to services
+ # Contains business logic, validation, and SOLID application
+ # Handles database CRUD operations
+ # Abstract classes and entity subclasses
+ # Data transfer objects (optional)
+# Custom exceptions
+# Reflection, sorting, database utilities
+ # Driver class demonstrating all features
+# Database schema & sample inserts
+ 
 OOP & SOLID Design
 Abstract Base Class
 LibraryItem (abstract): defines shared fields (id, name/title) and methods.
