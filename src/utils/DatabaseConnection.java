@@ -22,6 +22,7 @@ public class DatabaseConnection {
         return connection;
     }
 
+
     public static void main(String[] args) {
         // Run this to test if your link to pgAdmin works!
         getConnection();
